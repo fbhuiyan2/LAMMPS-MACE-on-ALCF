@@ -8,12 +8,12 @@ This guide provides step-by-step instructions to install [LAMMPS](https://lammps
 
 ## Table of Contents
 - [Prerequisites](#prerequisites)
-- [Step 1: Acquire a Compute Node for Compilation](#step-1-acquire-a-compute-node-for-compilation)
-- [Step 2: Set Up the Environment](#step-2-set-up-the-environment)  
-  - [2.1 Bash Profile Adjustment](#21-bash-profile-adjustment)  
-  - [2.2 Load Necessary Paths and Modules](#22-load-necessary-paths-and-modules)
-- [Step 3: Download Necessary Files on the Login Node](#step-3-download-necessary-files-on-the-login-node)
-- [Step 4: Transfer Files to a Shared Filesystem](#step-4-transfer-files-to-a-shared-filesystem)
+- [Step 1: Set Up the Environment](#step-2-set-up-the-environment)  
+  - [1.1 Bash Profile Adjustment](#21-bash-profile-adjustment)  
+  - [1.2 Load Necessary Paths and Modules](#22-load-necessary-paths-and-modules)
+- [Step 2: Download Necessary Files on the Login Node](#step-3-download-necessary-files-on-the-login-node)
+- [Step 3: Transfer Files to a Shared Filesystem](#step-4-transfer-files-to-a-shared-filesystem)
+- [Step 4: Acquire a Compute Node for Compilation](#step-1-acquire-a-compute-node-for-compilation)
 - [Step 5: Install the Latest CMake](#step-5-install-the-latest-cmake)
 - [Step 6: Download and Install Kokkos](#step-6-download-and-install-kokkos)
 - [Step 7: Download and Prepare LibTorch](#step-7-download-and-prepare-libtorch)
