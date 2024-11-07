@@ -74,7 +74,8 @@ Since compute nodes do not have internet access, download all required files on 
 
 - **Create a directory** for the installation files:  
 ```bash
-mkdir ~/lammps_installation_files  cd ~/lammps_installation_files
+mkdir ~/lammps_installation_files
+cd ~/lammps_installation_files
 ```
 
 - Note, I am using the home directory to show the installation process. However, this is not recommended since the quota for the home directory is very small. Instead it is always better to use your project directory, such as, `/lus/eagle/projects/yourProjectShortName/yourusername` to download and install files. For simplicity for writing, I will use home directory here.
