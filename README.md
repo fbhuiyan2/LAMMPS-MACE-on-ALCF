@@ -8,14 +8,12 @@ This guide provides step-by-step instructions to install [LAMMPS](https://lammps
 
 ## Table of Contents
 - [Prerequisites](#prerequisites)
-- [Step 1: Set Up the Environment](#step-2-set-up-the-environment)  
-  - [1.1 Bash Profile Adjustment](#21-bash-profile-adjustment)  
-  - [1.2 Load Necessary Paths and Modules](#22-load-necessary-paths-and-modules)
-- [Step 2: Download Necessary Files on the Login Node](#step-3-download-necessary-files-on-the-login-node)
-- [Step 3: Transfer Files to a Shared Filesystem](#step-4-transfer-files-to-a-shared-filesystem)
-- [Step 4: Acquire a Compute Node for Compilation](#step-1-acquire-a-compute-node-for-compilation)
+- [Step 1: Set Up the Environment](#step-1-set-up-the-environment)  
+- [Step 2: Download Necessary Files on the Login Node](#step-2-download-necessary-files-on-the-login-node)
+- [Step 3: Transfer Files to a Shared Filesystem](#step-3-transfer-files-to-a-shared-filesystem)
+- [Step 4: Acquire a Compute Node for Compilation](#step-4-acquire-a-compute-node-for-compilation)
 - [Step 5: Install the Latest CMake](#step-5-install-the-latest-cmake)
-- [Step 6: Download and Install Kokkos](#step-6-download-and-install-kokkos)
+- [Step 6: Install Kokkos](#step-6-install-kokkos)
 - [Step 7: Download and Prepare LibTorch](#step-7-download-and-prepare-libtorch)
 - [Step 8: Clone LAMMPS with MACE Package](#step-8-clone-lammps-with-mace-package)
 - [Step 9: Set Environment Variables](#step-9-set-environment-variables)
@@ -37,17 +35,9 @@ This guide provides step-by-step instructions to install [LAMMPS](https://lammps
 
 ---
 
-## Step 2: Set Up the Environment
+## Step 1: Set Up the Environment
 
-### 2.1 Bash Profile Adjustment
-
-For your interactive session, it’s important to source the global profile so that all necessary environment variables and paths are correctly set. Add the following to your job script or profile:
-
-```bash
-. /etc/profile
-```
-
-### 2.2 Load Necessary Paths and Modules
+### Load Necessary Paths and Modules
 
 On Sophia, compilers and CUDA tools are typically installed system-wide on compute nodes.
 #### Verify Compilers and Tools
@@ -76,7 +66,7 @@ which mpicxx
 which mpifort
 ```
 ---
-## Step 3: Download Necessary Files on the Login Node
+## Step 2: Download Necessary Files on the Login Node
 
 Since compute nodes do not have internet access, download all required files on the login node.
 
@@ -87,6 +77,8 @@ Since compute nodes do not have internet access, download all required files on 
 mkdir ~/lammps_installation_files  cd ~/lammps_installation_files
 ```
 
+- Note, I am using the home directory to show the installation process. However, this is not recommended since the quota for the home directory is very small. Instead it is always better to use your project directory, such as, `/lus/eagle/projects/yourProjectShortName/yourusername` to download and install files. For simplicity for writing, I will use home directory here.
+
 - **Download required packages:**
 
 **CMake:**  
@@ -95,38 +87,55 @@ wget https://github.com/Kitware/CMake/releases/download/v3.27.6/cmake-3.27.6-lin
 ```
 **Kokkos:**  
 ```bash
-wget https://github.com/kokkos/kokkos/archive/refs/tags/4.1.00.zip -O kokkos-4.1.00.zip
+wget https://github.com/kokkos/kokkos/releases/download/4.4.01/kokkos-4.4.01.tar.gz   # v 4.4.01 is, at the time of writing this, is the most recent version
 ```
+
 **LibTorch:**  
-  - **Determine the CUDA version on Sophia's compute nodes.**
-    Request an interactive session:    
-```bash
-qsub -I -q workq -A yourProjectShortName -n 1 -t 00:30:00
-```
-    
-On the compute node:    
+You can see the current CUDA version on Sophia using this:
+
 ```bash    
 nvcc --version
 ```
-  Note the CUDA version (e.g., CUDA 12.4).  
-  - **Download Matching LibTorch:**    
+
+Note, the CUDA version (at the time of writing, it is CUDA 12.4). 
+
+You may have to get into a compute node to see an output. If that is the case, see "Step 4" which describes how to get a compute node in interactive mode. After getting into an interactive session, do `nvcc --version` to see the CUSA version.
+  
+  - **Download Matching LibTorch:**
+    - Go to [Pytorch website](https://pytorch.org/), then select:
+      - **Pytorch Build** = Stable
+      - **Your OS** = Linux
+      - **Package** = Libtorch
+      - **Language** = C++/Java
+      - **Computer Program** = CUDA 12.4 (or whatever is the matching version with Sophia)
+    - Then copy the link for 'Download here (cxx11 ABI):' (let's call it `pytorch_link`)
+
 ```bash
-wget https://download.pytorch.org/libtorch/cu124/libtorch-shared-with-deps-2.5.1%2Bcu124.zip
+wget pytorch_link  
 ```
-  **LAMMPS with MACE:**  
+
+**LAMMPS with MACE:**  
 ```bash
 git clone --branch=mace --depth=1 https://github.com/ACEsuit/lammps
 ```
 
 ---
 
-## Step 1: Acquire a Compute Node for Compilation
+## Step 3: Transfer Files to a Shared Filesystem
+
+Ensure the directory ~/lammps_installation_files is in a shared filesystem accessible from both login and compute nodes (e.g., your home directory or a project directory). Or if you want to transfer the files to a different directory in your project directory, for example, on eagle, then do so.
+
+
+---
+
+## Step 4: Acquire a Compute Node for Compilation
+
 Since compilation cannot be performed on Sophia's login nodes, request an interactive session on a compute node:
 
 ```bash
 qsub -I -l select=1 -l walltime=00:59:00 -q queuename -l filesystems=home:eagle -A yourProjectShortName
-qsub -I -q queuename -A yourProjectShortName -n 1 -t 02:00:00
 ```
+
 Replace `yourProjectShortName` with your actual project short name.
 
 - **Explanation**:
@@ -139,29 +148,41 @@ Once you have access to the compute node, proceed with setting up your environme
 
 ---
 
-## Step 4: Transfer Files to a Shared Filesystem
-
-Ensure the directory ~/lammps_installation_files is in a shared filesystem accessible from both login and compute nodes (e.g., your home directory or a project directory).
-
----
-
 ## Step 5: Install the Latest CMake
 
 On the compute node, navigate to the directory with the installation files:
+
 ```bash
 cd ~/lammps_installation_files
 ```
+
 Extract and set up CMake:
+
 ```bash
-tar -zxvf cmake-3.27.6-linux-x86_64.tar.gzexport PATH=$(pwd)/cmake-3.27.6-linux-x86_64/bin:$PATHcmake --version
+tar -zxvf cmake-3.27.6-linux-x86_64.tar.gzexport
 ```
+
+Add Cmake to path
+```bash
+PATH=$(pwd)/cmake-3.27.6-linux-x86_64/bin:$PATH
+```
+
+Check Cmake was installed properly
+```bash
+cmake --version
+```
+
+If you see the version information, then the installation was good.
+
 ---
 
-## Step 6: Download and Install Kokkos
+## Step 6: Install Kokkos
 
 Extract and build Kokkos:
 ```bash
-unzip kokkos-4.1.00.zipcd kokkos-4.1.00
+cd ~/lammps_installation_files   # making sure you are on the right directiory
+tar -zxvf kokkos-4.4.01.tar.gz
+cd kokkos-4.4.01
 mkdir build && cd build
 cmake \
   -DCMAKE_CXX_COMPILER=$(which g++) \
@@ -182,7 +203,9 @@ make -j 16 && make install
 
 Extract LibTorch:
 ```bash
-cd ~/lammps_installation_filesunzip libtorch-shared-with-deps-2.5.1+cu124.zipmv libtorch libtorch-gpu
+cd ~/lammps_installation_files   # making sure you are on the right directiory
+unzip libtorch-shared-with-deps-2.5.1+cu124.zip  # whatever libtorch you downloaded
+mv libtorch libtorch-gpu
 ```
 
 ---
@@ -190,11 +213,13 @@ cd ~/lammps_installation_filesunzip libtorch-shared-with-deps-2.5.1+cu124.zipmv 
 ## Step 8: Clone LAMMPS with MACE Package
 
 ```bash
-cd ~/lammps_installation_files
+cd ~/lammps_installation_files   # making sure you are on the right directiory
 git clone --branch=mace --depth=1 https://github.com/ACEsuit/lammps
 cd lammps
 mkdir build && cd build
 ```
+
+**Note**: If you have already clonned the git repo then you do not need to clone it again here, just cd into the directory and create the build folder.
 
 ---
 
@@ -223,6 +248,12 @@ export PATHTORCH=$(pwd)/../../libtorch-gpu
 ### 9.4 Ensure Correct CMake is Used
 ```bash
 export PATH=$(pwd)/../../cmake-3.27.6-linux-x86_64/bin:$PATH
+```
+
+- **Ensure MPI Compilers Are in PATH**:  
+```bash
+export PATH=/usr/mpi/gcc/openmpi-4.1.5a1/bin:$PATH
+export LD_LIBRARY_PATH=/usr/mpi/gcc/openmpi-4.1.5a1/lib:$LD_LIBRARY_PATH
 ```
 
 ---
@@ -257,25 +288,26 @@ cmake \
   -D PKG_MANYBODY=ON \
   -D PKG_MISC=ON \
   -D PKG_RIGID=ON \
+  -D USE_MKL=OFF \
+  -D USE_MKLDNN=OFF \
+  -D MKL_INCLUDE_DIR="" \
+  -D MKL_LIBRARY="" \
   ../cmake
 ```
 
 **Note:**
-
-- Ensure that mpicxx is available in your PATH. If not, add it:  
-```bash
-export PATH=/usr/mpi/gcc/openmpi-4.1.5a1/bin:$PATH
-export LD_LIBRARY_PATH=/usr/mpi/gcc/openmpi-4.1.5a1/lib:$LD_LIBRARY_PATH
-```
 
 - If you encounter errors, clean the build directory and retry:  
 ```bash
 rm -rf *
 ```
 
+- If you are repeating the cmake step in the `/lammps/build` directory for any reason, then first delete the previous build directory and then make the build directory again before going into the build directory.
+
 ---
 
 ## Step 11: Build LAMMPS
+
 ```bash
 make -j 16
 ```
@@ -285,6 +317,7 @@ make -j 16
 ## Step 12: Verify LAMMPS Installation
 
 ### 12.1 Locate the LAMMPS Executable
+
 ```bash
 realpath lmp
 ```
@@ -296,6 +329,12 @@ Navigate to an example directory and run a test:
 cd ../examples/flow
 mpirun -np 4 ../../build/lmp -in in.flow -k on g 1 -sf kk
 ```
+Or do
+```bash
+cd ../examples/flow
+../../build/lmp -in in.flow -k on g 1 -sf kk
+```
+This should start running the simulation in lammps. If you do not see proper output or see any error, then there is something wrong with the installation.
 
 ---
 
@@ -416,16 +455,19 @@ If you encounter the error:
 ```plaintext
 No CMAKE_CXX_COMPILER could be found.
 ```
+
 - **Ensure MPI Compilers Are in PATH**:  
 ```bash
 export PATH=/usr/mpi/gcc/openmpi-4.1.5a1/bin:$PATH
 export LD_LIBRARY_PATH=/usr/mpi/gcc/openmpi-4.1.5a1/lib:$LD_LIBRARY_PATH
 ```
+
 - **Verify mpicxx Is Available**:  
 ```bash
 which mpicxx
 mpicxx --version
 ```
+
 - **Clean Previous CMake Configurations**:  
 ```bash
 rm -rf CMakeCache.txt CMakeFiles
@@ -439,6 +481,14 @@ cmake -D CMAKE_CXX_COMPILER=$(which mpicxx) ... ..
 
 - **Compute nodes on Sophia do not have network connectivity**.
 - **Solution**: Download all necessary files on the login node and transfer them via a shared filesystem.
+
+### Bash Profile Adjustment
+
+This may not be necessary, but if you are having problems with anything that you cannot solve then do this. For your interactive session, it’s important to source the global profile so that all necessary environment variables and paths are correctly set. Add the following to your job script or profile:
+
+```bash
+. /etc/profile
+```
 
 ---
 
