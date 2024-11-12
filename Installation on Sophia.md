@@ -371,6 +371,12 @@ export OMP_NUM_THREADS=$NTHREADS
 export OMP_PROC_BIND=spread
 export OMP_PLACES=cores
 
+# Adding mpirun to path
+export PATH=/usr/mpi/gcc/openmpi-4.1.5a1/bin:$PATH
+
+# Print GPU assignment for debugging
+echo "MPI Rank: $OMPI_COMM_WORLD_RANK, Local Rank: $OMPI_COMM_WORLD_LOCAL_RANK, CUDA_VISIBLE_DEVICES: $CUDA_VISIBLE_DEVICES"
+
 # Path to the LAMMPS executable
 EXE=/path/to/lammps/build/lmp
 
@@ -407,9 +413,10 @@ chmod +x run_lammps_sophia.sh
 ```bash
 #!/bin/bash
 #PBS -N lammps_job
-#PBS -l select=1:ncpus=8:mpiprocs=1:ngpus=1
+#PBS -l select=1:ncpus=8:system=sophia
+#PBS -q by-gpu
+#PBS -l place=excl
 #PBS -l walltime=01:00:00
-#PBS -q workq
 #PBS -A yourProjectShortName
 #PBS -j oe
 
