@@ -12,7 +12,7 @@ This guide provides step-by-step instructions to install [LAMMPS](https://lammps
 - [Step 2: Download Necessary Files on the Login Node](#step-2-download-necessary-files-on-the-login-node)
 - [Step 3: Transfer Files to a Shared Filesystem](#step-3-transfer-files-to-a-shared-filesystem)
 - [Step 4: Acquire a Compute Node for Compilation](#step-4-acquire-a-compute-node-for-compilation)
-- [Step 5: Install the Latest CMake](#step-5-install-the-latest-cmake)
+- [Step 5: Add CMake](#add-cmake)
 - [Step 6: Install Kokkos](#step-6-install-kokkos)
 - [Step 7: Download and Prepare LibTorch](#step-7-download-and-prepare-libtorch)
 - [Step 8: Clone LAMMPS with MACE Package](#step-8-clone-lammps-with-mace-package)
@@ -146,7 +146,15 @@ Once you have access to the compute node, proceed with setting up your environme
 
 ---
 
-## Step 5: Install the Latest CMake
+## Step 5: Add CMake <a name="add-cmake"></a>
+
+Polaris has cmake available in the module
+
+```bash
+module load spack-pe-base cmake
+```
+
+Alternatively, you can install the latest CMake if you prefer.
 
 On the compute node, navigate to the directory with the installation files:
 
