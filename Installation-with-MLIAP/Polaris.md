@@ -64,7 +64,7 @@ Installing Kokkos is not mandatory. However, when built with the kokkos availabl
 
 If you want to skip this, then you just need to exclude the environment path setup related to kokkos in the **Building LAMMPS** step. Everything else should remain the same.
 
-1. Download Kokkos:
+Download Kokkos:
    
 ```bash    
 wget https://github.com/kokkos/kokkos/releases/download/4.4.01/kokkos-4.4.01.tar.gz
@@ -72,7 +72,7 @@ wget https://github.com/kokkos/kokkos/releases/download/4.4.01/kokkos-4.4.01.tar
 
 kokkos-4.4.01 is tested and works. If newer version is available, you can try that.
 
-2. Install Kokkos:
+Install Kokkos:
 
 ```bash
 cd lammps_mace  # make sure in the main installation dir
