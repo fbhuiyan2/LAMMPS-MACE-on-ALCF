@@ -100,6 +100,8 @@ Build:
 
 # Scaling test
 
+Scaling tests for Symmetrix was done using Mace-mpA0 (medium) foundation model.
+
 ## Strong scaling
 
 ![image](https://github.com/user-attachments/assets/25b03425-03a2-41a6-b17b-f813bdc8f95d)
@@ -108,7 +110,7 @@ Build:
 
 **Comparison with MACE-MLIAP** 
 
-With MACE-MLIAP, the same systems were also tested, however, the best performance achieved was  ~0.25 ns/day (with 672 atoms). The strong scaling trend was similar as with Symmetrix- increasing ranks quickly drgraded performance. MACE-MLIAP can also handle larger systems (up to 10k atoms tested), however, the performance is slower than with Symmetrix.
+For MLIAP, tests were run with Mace-mp0a (small) model. With MACE-MLIAP, the same systems were also tested, however, the best performance achieved was  ~0.25 ns/day (with 672 atoms). The strong scaling trend was similar as with Symmetrix- increasing ranks quickly drgraded performance. MACE-MLIAP can also handle larger systems (up to 10k atoms tested), however, the performance is slower than with Symmetrix.
 
 ## Weak scaling
 
