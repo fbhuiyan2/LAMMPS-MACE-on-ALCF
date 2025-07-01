@@ -106,6 +106,9 @@ Build:
 
 ![image](https://github.com/user-attachments/assets/56e0f508-b7fa-4fde-8d6e-27ae4ebf9962)
 
+**Comparison with MACE-MLIAP** 
+With MACE-MLIAP, the same systems were also tested, however, the best performance achieved was  ~0.25 ns/day (with 672 atoms). The strong scaling trend was similar as with Symmetrix- increasing ranks quickly drgraded performance. MACE-MLIAP can also handle larger systems (up to 10k atoms tested), however, the performance is slower than with Symmetrix.
+
 ## Weak scaling
 
 ![image](https://github.com/user-attachments/assets/e5eac1e1-ed53-496d-8706-0b530d6fb661)
