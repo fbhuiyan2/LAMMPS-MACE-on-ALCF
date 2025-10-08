@@ -31,9 +31,6 @@ export CUDA_HOME=$(dirname $(dirname $(which nvcc)))
 export PATH=$CUDA_HOME/bin:$PATH
 export LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH
 
-# Download and setup torch, instructions can be found in other guides in this repo
-export PATHTORCH=$(pwd)/libtorch
-
 # i have my own kokkos installed at kokkosinstall
 
 export KOKKOS_PATH=$(pwd)/../../kokkosinstall
@@ -53,7 +50,6 @@ cmake \
   -D CMAKE_CXX_COMPILER=$(pwd)/../lib/kokkos/bin/nvcc_wrapper \
   -D CMAKE_BUILD_TYPE=Release \
   -D CMAKE_INSTALL_PREFIX=$(pwd) \
-  -D CMAKE_PREFIX_PATH=${PATHTORCH} \
   -D CMAKE_CXX_FLAGS="${CMAKE_CXX_FLAGS} -march=native -ffast-math" \
   \
   -D CUDA_TOOLKIT_ROOT_DIR=$CUDA_HOME \
@@ -73,6 +69,7 @@ cmake \
   -D PKG_QEQ=ON \
   -D PKG_REPLICA=ON \
   -D PKG_MANYBODY=ON \
+  -D PKG_MOLECULE=ON \
   -D PKG_MISC=ON \
   -D PKG_RIGID=ON \
   \
