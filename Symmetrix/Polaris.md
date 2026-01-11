@@ -37,7 +37,7 @@ export LIBRARY_PATH=$KOKKOS_PATH/lib:$LIBRARY_PATH
 mkdir build && cd build
 ```
 
-Create a file named cmake.sh with the following contents (note you may not need all the packages. Necessary packages for Symmetrix can be found on their [repo](https://github.com/wcwitt/symmetrix/tree/main/pair_symmetrix)):
+Create a file named `cmake.sh` with the following contents (note you may not need all the packages. Necessary packages for Symmetrix can be found on their [repo](https://github.com/wcwitt/symmetrix/tree/main/pair_symmetrix)):
 
 ```
 cmake \
