@@ -3,10 +3,22 @@
 qsub -I -l select=1 -l walltime=00:59:00 -q debug -l filesystems=home:eagle -A yourprojectname
 
 # Load required modules
-module use /soft/modulefiles/
-module load cudatoolkit-standalone/12.4.0
-module load conda
+module restore
+
+module swap PrgEnv-nvidia PrgEnv-gnu
+
+# or use -target-accel=nvidia90 in compiler/link flags
+module load cuda
+module load craype-accel-nvidia80    # can use craype-accel-nvidia90 as well
+module unload cuda
+
+module use /soft/modulefiles
+module load cudatoolkit-standalone/12.9.1
+
 module load spack-pe-base cmake
+module load cray-fftw
+
+module load conda
 conda activate base    # required only if PKG_PYTHON=ON
 
 # cd 2 project dir
@@ -26,14 +38,25 @@ cd lammps
 export CUDA_HOME=$(dirname $(dirname $(which nvcc)))
 export PATH=$CUDA_HOME/bin:$PATH
 export LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH
+```
 
-# I have my own kokkos installed at kokkosinstall
 
+If you have your own kokkos installed at ../../kokkosinstall
+
+```
 export KOKKOS_PATH=$(pwd)/../../kokkosinstall
 export PATH=$KOKKOS_PATH/bin:$PATH
 export LD_LIBRARY_PATH=$KOKKOS_PATH/lib:$LD_LIBRARY_PATH
 export LIBRARY_PATH=$KOKKOS_PATH/lib:$LIBRARY_PATH
 
+# and set the following in the cmake command or the cmake.sh script below:
+# `-D CMAKE_CXX_COMPILER=CC \` instead of: `-D CMAKE_CXX_COMPILER=$(pwd)/../lib/kokkos/bin/nvcc_wrapper \`
+```
+
+If you want to use LAMPPS's kokkos then follow along:
+
+```
+export NVCC_WRAPPER_DEFAULT_COMPILER=CC
 mkdir build && cd build
 ```
 
@@ -41,10 +64,10 @@ Create a file named `cmake.sh` with the following contents (note you may not nee
 
 ```
 cmake \
-  -D CMAKE_CXX_COMPILER=CC \
+  -D CMAKE_CXX_COMPILER=$(pwd)/../lib/kokkos/bin/nvcc_wrapper \
   -D CMAKE_BUILD_TYPE=Release \
   -D CMAKE_INSTALL_PREFIX=$(pwd) \
-  -D CMAKE_CXX_FLAGS="-O3 -ffast-math" \
+  -D CMAKE_CXX_FLAGS="-O3 -march=native -ftree-vectorize"
   \
   -D CMAKE_CXX_STANDARD=20 \
   -D CMAKE_CXX_STANDARD_REQUIRED=ON \
