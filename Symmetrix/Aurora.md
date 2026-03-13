@@ -6,7 +6,15 @@ Symmetrix-specific details can be found [here](https://github.com/wcwitt/symmetr
 # create installation dir and download files
 mkdir lammps-symmetrix && cd lammps-symmetrix
 git clone -b release https://github.com/lammps/lammps
-git clone --recursive https://github.com/wcwitt/symmetrix
+
+# Cloning Intel GPU Modified Symmetrix
+git clone --recurse-submodules https://github.com/alvarovm/symmetrix
+cd symmetrix
+Deinit and remove the old submodule
+git submodule deinit -f -- libsymmetrix/external/sphericart
+git rm -f libsymmetrix/external/sphericart
+rm -rf .git/modules/libsymmetrix/external/sphericart
+git submodule add https://github.com/alvarovm/sphericart libsymmetrix/external/sphericart
 
 # obtain a compute node 
 qsub -I -l select=1,walltime=1:00:00,place=scatter -l filesystems=home:flare -A your_project -q debug
@@ -42,6 +50,7 @@ cmake \
   \
   -D CMAKE_CXX_STANDARD=20 \
   -D CMAKE_CXX_STANDARD_REQUIRED=ON \
+  -D CMAKE_CXX_FLAGS="-march=native -fp-model fast -fp-model=precise"\
   \
   -D BUILD_MPI=ON \
   -D BUILD_OMP=ON \
@@ -56,7 +65,20 @@ cmake \
   -D PKG_MISC=ON \
   -D PKG_RIGID=ON \
   \
+  -D PKG_KOKKOS=ON \
+  -D Kokkos_ENABLE_SERIAL=ON \
+  -D Kokkos_ENABLE_SYCL=ON \
+  -D Kokkos_ENABLE_OPENMP=ON \
+  -D Kokkos_ARCH_NATIVE=ON \
+  -D Kokkos_ARCH_INTEL_PVC=ON \
+  -D Kokkos_ENABLE_AGGRESSIVE_VECTORIZATION=ON \
+  -D FFT_KOKKOS=MKL_GPU \
+  \
   -D SYMMETRIX_KOKKOS=ON \
+  -D SYMMETRIX_KOKKOS=ON \
+  -D SPHERICART_OPENMP=ON\
+  -D SPHERICART_ENABLE_SYCL=ON \
+  -D SPHERICART_SYCL_DEVICE=gpu\
   ../cmake
 ```
 
