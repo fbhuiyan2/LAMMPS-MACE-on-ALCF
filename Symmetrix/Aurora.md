@@ -15,7 +15,7 @@ git submodule deinit -f -- libsymmetrix/external/sphericart
 git rm -f libsymmetrix/external/sphericart
 rm -rf .git/modules/libsymmetrix/external/sphericart
 git submodule add https://github.com/alvarovm/sphericart libsymmetrix/external/sphericart
-
+cd ..
 # obtain a compute node 
 qsub -I -l select=1,walltime=1:00:00,place=scatter -l filesystems=home:flare -A your_project -q debug
 
