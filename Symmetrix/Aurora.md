@@ -10,7 +10,7 @@ git clone -b release https://github.com/lammps/lammps
 # Cloning Intel GPU Modified Symmetrix
 git clone --recurse-submodules https://github.com/alvarovm/symmetrix
 cd symmetrix
-Deinit and remove the old submodule
+# Deinit and remove the old submodule
 git submodule deinit -f -- libsymmetrix/external/sphericart
 git rm -f libsymmetrix/external/sphericart
 rm -rf .git/modules/libsymmetrix/external/sphericart
