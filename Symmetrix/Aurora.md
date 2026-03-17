@@ -71,7 +71,7 @@ Run script:
 `sh cmake.sh`
 
 Build:
-`make -j 16`
+`cd build && make -j 16`
 
 # Notes on running simulations
 
