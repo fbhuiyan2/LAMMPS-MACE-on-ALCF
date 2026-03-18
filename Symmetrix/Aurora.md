@@ -33,7 +33,8 @@ cd lammps
 # this requires cmake 3.27 or higher. Check version
 cmake --version
 
-mkdir build && cd build
+# Create a file called cmake.sh and paste the content from the next block there
+vi cmake.sh
 ```
 
 On Aurora, users are encouraged to use CMake to build LAMMPS using the default compilers and the kokkos-sycl-intel.cmake configuration file (path/to/lammps/cmake/presets/kokkos-sycl-intel.cmake) included in the LAMMPS repo.
