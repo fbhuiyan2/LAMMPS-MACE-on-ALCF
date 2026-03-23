@@ -72,7 +72,7 @@ Run script:
 `sh cmake.sh`
 
 Build:
-`cd build && make -j 16`
+`cd build && make -j 32`
 
 # Notes on running simulations
 
