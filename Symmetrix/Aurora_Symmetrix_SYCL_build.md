@@ -49,7 +49,7 @@ cmake \
     -D CMAKE_BUILD_TYPE=Release \
     -D CMAKE_CXX_STANDARD=20 \
     -D CMAKE_CXX_STANDARD_REQUIRED=ON \
-    -D CMAKE_CXX_FLAGS="-march=native -fp-model fast -fp-model=precise" \
+    -D CMAKE_CXX_FLAGS="-march=native -fp-model=precise" \
     -D BUILD_MPI=ON \
     -D BUILD_SHARED_LIBS=ON \
     -D BUILD_OMP=ON \
