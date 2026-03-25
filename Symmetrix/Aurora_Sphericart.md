@@ -2,6 +2,8 @@
 
 Symmetrix-specific details can be found [here](https://github.com/wcwitt/symmetrix/tree/main/pair_symmetrix).
 
+Original Symmetrix cannot be used with Sphericart on Aurora. Follow the instructions below to install Lammps-Symmetrix with Sphericart on Aurora. This build provides some speed-up compared to non-Sphericart version of Lammps.
+
 ```
 # create installation dir and download files
 mkdir lammps-symmetrix && cd lammps-symmetrix
