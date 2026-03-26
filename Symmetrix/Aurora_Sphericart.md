@@ -99,9 +99,7 @@ Vanilla Aurora.md build vs Alvaro's Sphericart build weak scaling test.
 
 | Build                     | Performance (ns/day) | Speedup vs matching Vanilla baseline |
 |---------------------------|----------------------|---------------------------------------|
-| Vanilla (Aurora-6 tile)  | 0.667                | (baseline)                            |
-| Alvaro's (Aurora-6 tile) | 0.822                | +23.2%                                |
-| Vanilla (Aurora-12 tile) | 1.139                | (baseline)                            |
-| Alvaro's (Aurora-12 tile)| 1.475                | +29.5%                                |
-| Vanilla (Aurora-12 tile) | 1.139                | baseline                             |
-| Alvaro's (Aurora-12 tile)| 1.475                | +29.5%                               |
+| Symmetrix w/o Sphericart (Aurora-6 tile)  | 0.667                | (baseline)                            |
+| Symmetrix with Sphericart (Aurora-6 tile) | 0.822                | +23.2%                                |
+| Symmetrix w/o Sphericart (Aurora-12 tile) | 1.139                | (baseline)                            |
+| Symmetrix with Sphericart (Aurora-12 tile)| 1.475                | +29.5%                                |
