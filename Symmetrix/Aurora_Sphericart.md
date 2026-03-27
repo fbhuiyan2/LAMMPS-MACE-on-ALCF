@@ -93,7 +93,7 @@ Aurora has 2 tiles per GPU. Simulation speed was highest with 1 tile-1 rank, and
 
 
 # Performance tests
-Symmetrix Aurora.md build vs Symmetrix + Sphericart build weak scaling test.
+The table below shows a weak scaling test comparing the Symmetrix Aurora.md build with the Symmetrix + Sphericart build.
 
 
 **Number of atoms:** 8512
