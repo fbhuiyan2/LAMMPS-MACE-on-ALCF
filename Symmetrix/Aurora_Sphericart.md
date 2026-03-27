@@ -89,10 +89,10 @@ Build:
 # Notes on running simulations
 
 Aurora has 2 tiles per GPU. Simulation speed was highest with 1 tile-1 rank, and speed started to drop with more tiles/GPUs. for multi tile or multi GPU runs, use the gpu affinity scripts (gpu_dev_compact or gpu_tile_compact, [instructions here](https://docs.alcf.anl.gov/aurora/running-jobs-aurora/#1-binding-mpi-ranks-to-gpus-using-gpu_tile_compactsh-and-gpu_dev_compactsh-scripts)). Use `-k on g 1 -sf kk -pk kokkos` (note `g 1`) when running the LAMMPS binary.
-![Weak scaling performance for Symmetrix with and without Sphericart on Aurora](https://github.com/user-attachments/assets/f69dc496-4745-4e9a-89a3-ca5837f9d8d3)
-
 
 # Performance tests
+![Weak scaling performance for Symmetrix with and without Sphericart on Aurora](https://github.com/user-attachments/assets/f69dc496-4745-4e9a-89a3-ca5837f9d8d3)
+
 The table below shows a weak scaling test comparing the Symmetrix Aurora.md build with the Symmetrix + Sphericart build.
 
 
