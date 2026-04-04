@@ -14,6 +14,11 @@ qsub -I -l select=1:ngpus=1 -l walltime=01:00:00 -q gpu -A <project_name>
 # Load necessary modules
 module add hpcx/2.23-gcc/hpcx-ompi cuda/13.0.0 cmake intel-oneapi-mkl/2023.1.0
 
+# Symmetrix specific steps
+cd symmetrix/pair_symmetrix
+./install.sh ../../lammps
+cd ../..
+
 cd lammps
 mkdir build && cd build
 ```
