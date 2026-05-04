@@ -67,7 +67,7 @@ cmake \
   -D CMAKE_CXX_COMPILER=$(pwd)/../lib/kokkos/bin/nvcc_wrapper \
   -D CMAKE_BUILD_TYPE=Release \
   -D CMAKE_INSTALL_PREFIX=$(pwd) \
-  -D CMAKE_CXX_FLAGS="-O3 -march=native -ftree-vectorize"
+  -D CMAKE_CXX_FLAGS="-O3 -march=native -ftree-vectorize" \
   \
   -D CMAKE_CXX_STANDARD=20 \
   -D CMAKE_CXX_STANDARD_REQUIRED=ON \
