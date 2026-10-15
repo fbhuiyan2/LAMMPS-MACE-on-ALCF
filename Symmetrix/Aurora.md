@@ -84,6 +84,16 @@ Run script:
 Build:
 `make -j 32`
 
+### Troubleshooting: Kokkos / kokkos-kernels version mismatch during `sh cmake.sh`
+
+Symmetrix bundles its own copy of kokkos-kernels at `symmetrix/libsymmetrix/external/kokkos-kernels`, pinned to a specific version. LAMMPS separately vendors its own Kokkos at `lammps/lib/kokkos`. These two must be on matching major.minor Kokkos versions, or the `cmake.sh` step fails with an error like:
+```
+Kokkos Kernels X.Y.Z requires Kokkos A.B.C or greater (found <lammps's Kokkos version>)
+```
+This can happen if LAMMPS updates its vendored Kokkos in a newer release but symmetrix's bundled kokkos-kernels hasn't been bumped to match (or vice versa).
+
+**Fix:** check the Kokkos version LAMMPS vendors (`lammps/lib/kokkos/CMakeLists.txt`, look for `set(Kokkos_VERSION_MAJOR/MINOR/PATCH ...)` near the top) and the version kokkos-kernels bundled with symmetrix expects (`symmetrix/libsymmetrix/external/kokkos-kernels/CMakeLists.txt`, same `KokkosKernels_VERSION_MAJOR/MINOR/PATCH` lines near the top). Replace the `kokkos-kernels` directory under `symmetrix/libsymmetrix/external/` with a copy of the kokkos-kernels release matching LAMMPS's vendored Kokkos version (download from the [kokkos-kernels releases page](https://github.com/kokkos/kokkos-kernels/releases)), then re-run `sh cmake.sh`.
+
 # Notes on running simulations
 
 Aurora has 2 tiles per GPU. Simulation speed was highest with 1 tile-1 rank, and speed started to drop with more tiles/GPUs. for multi tile or multi GPU runs, use the gpu affinity scripts (gpu_dev_compact or gpu_tile_compact, [instructions here](https://docs.alcf.anl.gov/aurora/running-jobs-aurora/#1-binding-mpi-ranks-to-gpus-using-gpu_tile_compactsh-and-gpu_dev_compactsh-scripts)). Use `-k on g 1 -sf kk -pk kokkos` (note `g 1`) when running the LAMMPS binary.
